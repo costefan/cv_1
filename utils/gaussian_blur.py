@@ -3,8 +3,9 @@ import numpy as np
 from utils.convolution import convolution_2d
 from scipy.signal import convolve2d
 
+
 def gaussian(x, mu, sigma):
-    return np.exp(-(((x - mu) / (sigma)) ** 2) / 2.0)
+    return np.exp(-(((x - mu) / sigma) ** 2) / 2.0)
 
 
 def generate_gaussian_kernel(kernel_size, sigma):

@@ -12,7 +12,7 @@ DEBUG = True
 # Tunable constants
 DEG_STEP = 1
 N_LARGEST = 10
-EDGE_THRESHOLD = 150
+EDGE_THRESHOLD = 100
 
 
 IMG_DIR_PATH = os.path.join(os.path.dirname(__file__), 'output')
