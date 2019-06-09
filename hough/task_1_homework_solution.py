@@ -1,15 +1,21 @@
 import cv2
+import os
 import numpy as np
 from scipy.signal import convolve2d
+
+from utils.gaussian_blur import gaussian_blur
 
 import hough.common as common
 
 DEBUG = True
 
-# Constants
+# Tunable constants
 DEG_STEP = 1
-N_LARGEST = 7
-EDGE_THRESHOLD = 200
+N_LARGEST = 10
+EDGE_THRESHOLD = 150
+
+
+IMG_DIR_PATH = os.path.join(os.path.dirname(__file__), 'output')
 
 
 def k_largest_index_argsort(a, k):
@@ -50,6 +56,8 @@ def edge_detection(img):
         [0, 0, 0],
         [-1, -2, -1],
     ])
+    # if it was required not to use convolve2d,
+    #  task2 has convolution_2d implemented
     img_g_x = convolve2d(img, G_x)
     img_g_y = convolve2d(img, G_y)
 
@@ -83,21 +91,30 @@ def main(input_fname, output_fname):
     """
     Main function
     Steps:
-    1. read_image
-    2. edge_detection
-    3. threshold on edges image
-    4. hough transform
-    5. hough space points detection
-    6. output results
+    read_image
+    gaussian blur
+    edge_detection
+    threshold on edges image
+    hough transform
+    hough space points detection
+    output results
     
     :param input_fname: 
     :param output_fname: 
     :return: 
     """
     img = read_img(input_fname)
+    img = gaussian_blur(img, (3, 3), 0.9)
+
+    cv2.imwrite(IMG_DIR_PATH + '/after_blur.png', img)
 
     edges = edge_detection(img).astype('uint8')
+
+    cv2.imwrite(IMG_DIR_PATH + '/after_edge_det.png', edges)
+
     ret, edges = cv2.threshold(edges, EDGE_THRESHOLD, 255, cv2.THRESH_BINARY)
+
+    cv2.imwrite(IMG_DIR_PATH + '/after_threshold.png', edges)
 
     hough_acc, thetas, rhos = hough_transform(edges)
     # founding n maximum
