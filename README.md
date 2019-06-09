@@ -5,6 +5,9 @@
 
 ./testing.ipynb - visual representation of task 1 (using code from hough directory)  
 
+HOWTO:
+run code for task 1:
+`$ python runner.py`
 
 * [HOUGH SOUCE CODE](hough) 
 * [BLUR](utils)
