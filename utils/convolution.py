@@ -8,11 +8,16 @@ def convolution_2d(image, kernel):
     h, w = image.shape
     if w != h:
         raise Exception('Image is not square')
-    new_h = h - m + 1
-    new_w = w - m + 1
-    new_image = np.zeros((new_h, new_w))
+
+    # create padding
+    pad_size = (((h + m * 2) // m * m) - h) // 2
+    image = np.pad(image, (pad_size, pad_size), 'constant', constant_values=0)
+
+    # convolve
+    new_image = np.zeros((h, w))
     for i in range(h):
         for j in range(w):
-            new_image[i][j] = np.sum(image[i:i+m, j:j+m] * kernel)
+            k = np.multiply(kernel, image[i:i+n, j:j+m])
+            new_image[i, j] = k.sum(axis=(0, 1))
 
     return new_image
